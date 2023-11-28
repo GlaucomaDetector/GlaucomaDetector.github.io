@@ -11,7 +11,8 @@
 </head>
 <body>
     <h1>Image Classification with Teachable Machine</h1>
-    <input type="file" id="imageUpload" accept="image/*" onchange="predict()">
+    <input type="file" id="imageUpload" accept="image/*">
+    <button id="runButton">Run</button>
     <div id="prediction"></div>
 
     <script type="text/javascript">
@@ -20,6 +21,7 @@
 
         window.onload = function() {
             loadModel();
+            document.getElementById('runButton').addEventListener('click', predict);
         };
 
         async function loadModel() {
