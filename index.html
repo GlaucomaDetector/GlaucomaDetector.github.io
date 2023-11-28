@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachable Machine Integration Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+</head>
+<body>
+    <h1>Image Classification with Teachable Machine</h1>
+    <input type="file" id="imageUpload" accept="image/*">
+    <button onclick="predict()">Predict</button>
+    <div id="prediction"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
