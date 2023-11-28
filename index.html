@@ -6,6 +6,7 @@
     <title>Teachable Machine with File Upload</title>
     <!-- Include TensorFlow.js library -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <!-- Include Teachable Machine library -->
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
 </head>
 <body>
@@ -17,6 +18,10 @@
         let model;
         const URL = "https://teachablemachine.withgoogle.com/models/vY1rIVd9g/"; // Replace with your Teachable Machine model URL
 
+        window.onload = function() {
+            loadModel();
+        };
+
         async function loadModel() {
             const modelURL = URL + "model.json";
             const metadataURL = URL + "metadata.json";
@@ -25,8 +30,6 @@
             model = await tmImage.load(modelURL, metadataURL);
             console.log("Model loaded!");
         }
-
-        loadModel();
 
         async function predict() {
             const imageUpload = document.getElementById('imageUpload');
@@ -57,3 +60,4 @@
     </script>
 </body>
 </html>
+
