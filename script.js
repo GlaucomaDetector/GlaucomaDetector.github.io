@@ -4,7 +4,7 @@ document.getElementById('uploadButton').addEventListener('click', function() {
 
     if (file) {
         // Initialize your Teachable Machine model here
-        const modelURL = 'YOUR_MODEL_URL'; // Replace with your model URL
+        const modelURL = 'https://teachablemachine.withgoogle.com/models/vY1rIVd9g/'; // Replace with your model URL
 
         // Load the model
         tmImage.load(modelURL)
