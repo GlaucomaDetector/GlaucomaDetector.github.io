@@ -1,65 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teachable Machine with File Upload</title>
-    <!-- Include TensorFlow.js library -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-    <!-- Include Teachable Machine library -->
-    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
 </head>
 <body>
-    <h1>Image Classification with Teachable Machine</h1>
-    <input type="file" id="imageUpload" accept="image/*">
-    <button id="runButton">Run</button>
-    <div id="prediction"></div>
+    <h1>Upload to Teachable Machine</h1>
+    <input type="file" id="fileUpload" accept="image/*">
+    <button id="uploadButton">Upload and Analyze</button>
+    <div id="output">Results will appear here</div>
 
-    <script type="text/javascript">
-        let model;
-        const URL = "https://teachablemachine.withgoogle.com/models/vY1rIVd9g/"; // Replace with your Teachable Machine model URL
-
-        window.onload = function() {
-            loadModel();
-            document.getElementById('runButton').addEventListener('click', predict);
-        };
-
-        async function loadModel() {
-            const modelURL = URL + "model.json";
-            const metadataURL = URL + "metadata.json";
-
-            // Load the model and metadata
-            model = await tmImage.load(modelURL, metadataURL);
-            console.log("Model loaded!");
-        }
-
-        async function predict() {
-            const imageUpload = document.getElementById('imageUpload');
-            if (imageUpload.files.length > 0) {
-                const image = await loadImage(imageUpload.files[0]);
-
-                // Run the image through the model
-                const prediction = await model.predict(image);
-
-                // Display the prediction
-                document.getElementById('prediction').innerText = `Prediction: ${prediction[0].className}`;
-            }
-        }
-
-        // Helper function to load an image
-        function loadImage(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.src = e.target.result;
-                    img.onload = () => resolve(img);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-
