@@ -1,13 +1,14 @@
 document.getElementById('uploadButton').addEventListener('click', function() {
     const fileInput = document.getElementById('fileUpload');
     const file = fileInput.files[0];
-
+    const URL = 'https://teachablemachine.withgoogle.com/models/vY1rIVd9g/';
     if (file) {
         // Initialize your Teachable Machine model here
-        const modelURL = 'https://teachablemachine.withgoogle.com/models/vY1rIVd9g/'; // Replace with your model URL
-
+        // Replace with your model URL
+        const modelURL = URL + 'model.json';
+        const metadataURL = URL + 'metadata.json';
         // Load the model
-        tmImage.load(modelURL)
+        tmImage.load(modelURL, metadataURL)
             .then(model => {
                 // Model loaded, process the file
                 const reader = new FileReader();
