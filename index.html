@@ -1,54 +1,50 @@
 <div>Teachable Machine Image Model</div>
-<button type="button" onclick="init()">Start</button>
-<input type="file" accept="image/*" id="file-upload" />
+<!-- If the Start button is not needed for loading the model, you can remove this -->
 <button type="button" onclick="init()">Load Model</button>
+<input type="file" accept="image/*" id="file-upload" style="display:none;" />
 <div id="label-container"></div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 <script type="text/javascript">
-    // More API functions here:
-    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
-
-    // the link to your model provided by Teachable Machine export panel
     const URL = "https://teachablemachine.withgoogle.com/models/vY1rIVd9g/";
+    let model, labelContainer, maxPredictions;
 
-  let model, labelContainer, maxPredictions;
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
 
-async function init() {
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
+        // Load the model
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
 
-    // Load the model
-    model = await tmImage.load(modelURL, metadataURL);
-    maxPredictions = model.getTotalClasses();
+        // Prepare the label container
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) {
+            labelContainer.appendChild(document.createElement("div"));
+        }
 
-    // Prepare the label container
-    labelContainer = document.getElementById("label-container");
-    for (let i = 0; i < maxPredictions; i++) {
-        labelContainer.appendChild(document.createElement("div"));
+        // Attach event listener to the file input only after the model is loaded
+        document.getElementById('file-upload').addEventListener('change', predict);
+        // Trigger the file input
+        document.getElementById('file-upload').click();
     }
-}
 
-async function predict(event) {
-    const file = event.target.files[0];
-    const image = new Image();
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        image.src = e.target.result;
-        image.onload = async () => {
-            const prediction = await model.predict(image);
-            for (let i = 0; i < maxPredictions; i++) {
-                const classPrediction =
-                    prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                labelContainer.childNodes[i].innerHTML = classPrediction;
-            }
+    async function predict(event) {
+        const file = event.target.files[0];
+        const image = new Image();
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            image.src = e.target.result;
+            image.onload = async () => {
+                const prediction = await model.predict(image);
+                for (let i = 0; i < maxPredictions; i++) {
+                    const classPrediction =
+                        prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                    labelContainer.childNodes[i].innerHTML = classPrediction;
+                }
+            };
         };
-    };
-    reader.readAsDataURL(file);
-}
+        reader.readAsDataURL(file);
+    }
+</script>
 
-// Make sure the model is loaded before attaching event listeners
-window.onload = init;
-
-// Event listener for the file input
-document.getElementById('file-upload').addEventListener('change', predict);
