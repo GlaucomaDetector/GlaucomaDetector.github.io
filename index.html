@@ -8,7 +8,7 @@
     <div>Teachable Machine Image Model</div>
     <button type="button" onclick="init()">Load Model</button>
     <!-- This button will be shown after the model is loaded -->
-    <button id="upload-button" type="button" style="display:none;" onclick="document.getElementById('file-upload').click()">Choose File</button>
+    <button id="upload-button" type="button" style="display:none;">Choose File</button>
     <input type="file" accept="image/*" id="file-upload" style="display:none;" />
     <div id="label-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
@@ -32,8 +32,11 @@
                     labelContainer.appendChild(document.createElement("div"));
                 }
 
-                // Show the upload button and attach event listener to the file input
+                // Setup event listeners
                 document.getElementById('upload-button').style.display = 'block';
+                document.getElementById('upload-button').onclick = () => document.getElementById('file-upload').click();
+                document.getElementById('file-upload').addEventListener('change', predict);
+
                 console.log("Model loaded successfully!");
             } catch (error) {
                 console.error("Failed to load the model", error);
@@ -73,4 +76,5 @@
     </script>
 </body>
 </html>
+
 
