@@ -41,22 +41,36 @@
         }
 
         async function predict(event) {
+            console.log("File upload triggered");
             const file = event.target.files[0];
             const image = new Image();
             const reader = new FileReader();
             reader.onload = (e) => {
                 image.src = e.target.result;
                 image.onload = async () => {
-                    const prediction = await model.predict(image);
-                    for (let i = 0; i < maxPredictions; i++) {
-                        const classPrediction =
-                            prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                        labelContainer.childNodes[i].innerHTML = classPrediction;
+                    console.log("Image loaded, making predictions");
+                    try {
+                        const prediction = await model.predict(image);
+                        for (let i = 0; i < maxPredictions; i++) {
+                            const classPrediction =
+                                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                            labelContainer.childNodes[i].innerHTML = classPrediction;
+                        }
+                        console.log("Predictions made successfully");
+                    } catch (predictError) {
+                        console.error("Error making predictions", predictError);
                     }
                 };
+                image.onerror = (error) => {
+                    console.error("Error loading the image", error);
+                };
+            };
+            reader.onerror = (error) => {
+                console.error("Error reading the file", error);
             };
             reader.readAsDataURL(file);
         }
     </script>
 </body>
 </html>
+
