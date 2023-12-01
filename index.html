@@ -26,21 +26,31 @@ async function init() {
     for (let i = 0; i < maxPredictions; i++) {
         labelContainer.appendChild(document.createElement("div"));
     }
-
-    document.getElementById('file-upload').addEventListener('change', predict);
 }
 
-async function predict(event) {
+// Handle file upload and make a prediction with the model
+async function handleFileUpload(event) {
     const file = event.target.files[0];
     const image = new Image();
     image.src = URL.createObjectURL(file);
     image.onload = async () => {
         const prediction = await model.predict(image);
-        for (let i = 0; i < maxPredictions; i++) {
-            const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-            labelContainer.childNodes[i].innerHTML = classPrediction;
-        }
+        displayPrediction(prediction);
     };
 }
+
+// Display the prediction results
+function displayPrediction(prediction) {
+    for (let i = 0; i < maxPredictions; i++) {
+        const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+        labelContainer.childNodes[i].innerHTML = classPrediction;
+    }
+}
+
+// Add event listener to the file upload input
+document.getElementById('file-upload').addEventListener('change', handleFileUpload);
+
+// Initialize the model when the page loads
+window.addEventListener('load', init);
     }
 </script>
