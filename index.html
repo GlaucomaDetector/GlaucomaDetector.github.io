@@ -11,24 +11,23 @@
     let model, labelContainer, maxPredictions;
 
     async function init() {
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
 
-        // Load the model
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
+    // Load the model
+    model = await tmImage.load(modelURL, metadataURL);
+    maxPredictions = model.getTotalClasses();
 
-        // Prepare the label container
-        labelContainer = document.getElementById("label-container");
-        for (let i = 0; i < maxPredictions; i++) {
-            labelContainer.appendChild(document.createElement("div"));
-        }
-
-        // Attach event listener to the file input only after the model is loaded
-        document.getElementById('file-upload').addEventListener('change', predict);
-        // Trigger the file input
-        document.getElementById('file-upload').click();
+    // Prepare the label container
+    labelContainer = document.getElementById("label-container");
+    for (let i = 0; i < maxPredictions; i++) {
+        labelContainer.appendChild(document.createElement("div"));
     }
+
+    // Show the upload button and attach event listener to the file input
+    document.getElementById('upload-button').style.display = 'block';
+    document.getElementById('file-upload').addEventListener('change', predict);
+}
 
     async function predict(event) {
         const file = event.target.files[0];
